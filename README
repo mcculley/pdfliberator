@@ -1,0 +1,14 @@
+PDFLiberator is just a simple utility for removing the owner password from a PDF document.  There are a lot of cases where a public
+document has been inappropriately protected with an unknown owner password.  An owner password prohibits modifications of such a
+document.  PDFLiberator uses the iText (http://www.lowagie.com/iText/) library to remove the owner password.
+
+You will need a JVM and the iText runtime libraries.  Because iText depends on the BouncyCastle library, you will also need to
+download it from http://www.bouncycastle.org/.
+
+An example invocation:
+
+java -classpath .:iText-2.1.5.jar:bcprov-jdk15-142.jar PDFLiberator fj.pdf
+
+--
+Gene McCulley
+mcculley@stackframe.com
