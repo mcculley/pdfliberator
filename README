@@ -12,6 +12,9 @@ An example invocation:
 
 java -classpath .:iText-2.1.5.jar:bcprov-jdk15-142.jar PDFLiberator fj.pdf
 
+When - is supplied as the only argument, the PDF file to process is read from
+standard input and the modified version is written to standard output.
+
 --
 Gene McCulley
 mcculley@stackframe.com
