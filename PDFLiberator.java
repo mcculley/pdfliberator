@@ -49,12 +49,12 @@ public class PDFLiberator {
     /**
      * Removes the owner password on a PDF document passed through as a stream.
      *
-     * @param input the InputStream containing the document to enable
-     * @param output the OutputStream to write the enabled document to
+     * @param input the InputStream containing the document to liberate
+     * @param output the OutputStream to write the liberated document to
      * @throws IOException if there is a problem reading from or writing to the supplied streams
      * @throws DocumentException if there is a problem parsing or writing the PDF document
      */
-    public static void enable(InputStream input, OutputStream output) throws IOException, DocumentException {
+    public static void liberate(InputStream input, OutputStream output) throws IOException, DocumentException {
         PdfReader reader = new PdfReader(input);
         try {
             setBooleanField(reader, "ownerPasswordUsed", false);
@@ -75,28 +75,36 @@ public class PDFLiberator {
     /**
      * Removes the owner password on a PDF file.
      *
-     * @param file the File to enable.
+     * @param file the File to liberate.
      * @throws Exception if anything goes wrong and leaves <code>file</code> untouched
      */
-    public static void enable(File file) throws Exception {
-        System.out.println("Enabling " + file);
+    public static void liberate(File file) throws Exception {
+        System.out.println("Liberating " + file + '.');
         File tmp = File.createTempFile(file.getName(), ".tmp", file.getParentFile());
         tmp.deleteOnExit();
-        enable(new FileInputStream(file), new FileOutputStream(tmp));
+        liberate(new FileInputStream(file), new FileOutputStream(tmp));
         tmp.renameTo(file);
     }
 
     /**
      * The command line entry point.
      *
-     * @param args the files to enable
+     * @param args the files to liberate
      */
     public static void main(String[] args) {
-        for (String arg : args) {
+        if (args.length == 1 && args[0].equals("-")) {
             try {
-                enable(new File(arg));
+                liberate(System.in, System.out);
             } catch (Exception e) {
-                System.err.println("Could not fix " + arg + ": " + e);
+                System.err.println("Error processing stdin: " + e);
+            }
+        } else {
+            for (String arg : args) {
+                try {
+                    liberate(new File(arg));
+                } catch (Exception e) {
+                    System.err.println("Could not fix " + arg + ": " + e);
+                }
             }
         }
     }
