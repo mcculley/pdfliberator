@@ -84,8 +84,8 @@ public class GUI {
                 liberateMenuItem.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent evt) {
-                        System.err.println("Liberate...");
                         JFileChooser chooser = new JFileChooser();
+                        chooser.setDialogTitle("Liberate");
                         chooser.setFileFilter(new ExtensionFileFilter("PDF"));
                         chooser.setMultiSelectionEnabled(true);
                         // TODO: Use prefs to store current directory.
