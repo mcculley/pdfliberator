@@ -21,6 +21,8 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import javax.swing.filechooser.FileFilter;
+
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -34,6 +36,29 @@ public class GUI {
 
     private GUI() {
         // Inhibit construction as all methods are static.
+    }
+
+    /**
+     * A simple implementation of FileFilter for dealing with files of a particular extension.
+     */
+    private static class ExtensionFileFilter extends FileFilter {
+
+        private final String extension;
+
+        private ExtensionFileFilter(String extension) {
+            this.extension = extension;
+        }
+
+        @Override
+        public boolean accept(File f) {
+            return f.getName().toLowerCase().endsWith("." + extension.toLowerCase());
+        }
+
+        @Override
+        public String getDescription() {
+            return extension + " files";
+        }
+
     }
 
     /**
@@ -61,9 +86,9 @@ public class GUI {
                     public void actionPerformed(ActionEvent evt) {
                         System.err.println("Liberate...");
                         JFileChooser chooser = new JFileChooser();
+                        chooser.setFileFilter(new ExtensionFileFilter("PDF"));
                         chooser.setMultiSelectionEnabled(true);
                         // TODO: Use prefs to store current directory.
-                        // TODO: Add a PDF file extension filter.
                         int result = chooser.showOpenDialog(frame);
                         if (result == JFileChooser.APPROVE_OPTION) {
                             File[] selected = chooser.getSelectedFiles();
