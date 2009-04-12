@@ -1,6 +1,8 @@
 // Copyright 2009, StackFrame, LLC
 // This code is licensed under GPL v2.0 http://www.gnu.org/licenses/gpl-2.0.html
 
+package com.stackframe.pdfliberator;
+
 import java.awt.Color;
 
 import java.awt.event.ActionEvent;
@@ -10,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import java.util.Arrays;
+
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -34,8 +38,21 @@ import javax.swing.text.StyleConstants;
  */
 public class GUI {
 
+    private final Preferences prefs = Preferences.userNodeForPackage(getClass());
+
     private GUI() {
-        // Inhibit construction as all methods are static.
+    }
+
+    private File chooserDirectory() {
+        String directoryName = prefs.get("directory", null);
+        if (directoryName != null) {
+            File directory = new File(directoryName);
+            if (directory.exists()) {
+                return directory;
+            }
+        }
+
+        return new File(System.getProperty("user.home"));
     }
 
     /**
@@ -68,6 +85,7 @@ public class GUI {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
+                final GUI gui = new GUI();
                 final JFrame frame = new JFrame();
                 final JTextPane text = new JTextPane();
                 text.setEditable(false);
@@ -84,13 +102,13 @@ public class GUI {
                 liberateMenuItem.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent evt) {
-                        JFileChooser chooser = new JFileChooser();
+                        JFileChooser chooser = new JFileChooser(gui.chooserDirectory());
                         chooser.setDialogTitle("Liberate");
                         chooser.setFileFilter(new ExtensionFileFilter("PDF"));
                         chooser.setMultiSelectionEnabled(true);
-                        // TODO: Use prefs to store current directory.
                         int result = chooser.showOpenDialog(frame);
                         if (result == JFileChooser.APPROVE_OPTION) {
+                            gui.prefs.put("directory", chooser.getCurrentDirectory().getPath());
                             File[] selected = chooser.getSelectedFiles();
                             for (File file : selected) {
                                 String message;

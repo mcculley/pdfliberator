@@ -1,6 +1,8 @@
 // Copyright 2009, StackFrame, LLC
 // This code is licensed under GPL v2.0 http://www.gnu.org/licenses/gpl-2.0.html
 
+package com.stackframe.pdfliberator;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

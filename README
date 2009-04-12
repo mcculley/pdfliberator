@@ -10,7 +10,7 @@ http://www.bouncycastle.org/.
 
 An example invocation:
 
-java -classpath .:iText-2.1.5.jar:bcprov-jdk15-142.jar PDFLiberator fj.pdf
+java -classpath bin:iText-2.1.5.jar:bcprov-jdk15-142.jar com.stackframe.pdfliberator.PDFLiberator file.pdf
 
 When - is supplied as the only argument, the PDF file to process is read from
 standard input and the modified version is written to standard output.
