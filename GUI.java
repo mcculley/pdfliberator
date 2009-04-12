@@ -1,6 +1,8 @@
 // Copyright 2009, StackFrame, LLC
 // This code is licensed under GPL v2.0 http://www.gnu.org/licenses/gpl-2.0.html
 
+import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,9 +17,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 /**
  * A GUI for PDFLiberator.
@@ -38,9 +44,9 @@ public class GUI {
 
             public void run() {
                 final JFrame frame = new JFrame();
-                final JTextArea textArea = new JTextArea();
-                textArea.setEditable(false);
-                frame.getContentPane().add(new JScrollPane(textArea));
+                final JTextPane text = new JTextPane();
+                text.setEditable(false);
+                frame.getContentPane().add(new JScrollPane(text));
                 JMenuBar menuBar = new JMenuBar();
                 frame.setJMenuBar(menuBar);
                 JMenu fileMenu = new JMenu("File");
@@ -57,15 +63,28 @@ public class GUI {
                         JFileChooser chooser = new JFileChooser();
                         chooser.setMultiSelectionEnabled(true);
                         // TODO: Use prefs to store current directory.
+                        // TODO: Add a PDF file extension filter.
                         int result = chooser.showOpenDialog(frame);
                         if (result == JFileChooser.APPROVE_OPTION) {
                             File[] selected = chooser.getSelectedFiles();
                             for (File file : selected) {
+                                String message;
+                                Color messageColor;
                                 try {
                                     PDFLiberator.liberate(file);
-                                    textArea.insert("Liberated " + file + ".\n", 0);
+                                    messageColor = Color.BLACK;
+                                    message = "Liberated " + file;
                                 } catch (Exception e) {
-                                    textArea.insert("Error processing " + file + ": " + e + '\n', 0);
+                                    messageColor = Color.RED;
+                                    message = "Error processing " + file + ": " + e;
+                                }
+
+                                SimpleAttributeSet set = new SimpleAttributeSet();
+                                set.addAttribute(StyleConstants.Foreground, messageColor);
+                                try {
+                                    text.getDocument().insertString(0, message + "\n", set);
+                                } catch (BadLocationException ble) {
+                                    throw new AssertionError(ble);
                                 }
                             }
                         }
