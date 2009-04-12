@@ -47,6 +47,7 @@ public class GUI {
                 // TODO: Use the OS X wrapper class to do the right thing for the menu bar.
                 menuBar.add(fileMenu);
                 JMenuItem liberateMenuItem = new JMenuItem("Liberate...");
+                fileMenu.add(liberateMenuItem);
                 liberateMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
                                                                        liberateMenuItem.getToolkit().getMenuShortcutKeyMask()));
                 liberateMenuItem.addActionListener(new ActionListener() {
@@ -71,7 +72,18 @@ public class GUI {
                     }
 
                 });
-                fileMenu.add(liberateMenuItem);
+
+                JMenuItem quit = new JMenuItem("Quit");
+                fileMenu.add(quit);
+                quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, quit.getToolkit().getMenuShortcutKeyMask()));
+                quit.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent evt) {
+                        System.exit(0);
+                    }
+
+                });
+
                 frame.setSize(320, 240);
                 frame.setVisible(true);
             }
