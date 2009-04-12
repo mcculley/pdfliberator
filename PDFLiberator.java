@@ -10,6 +10,11 @@ import java.io.OutputStream;
 
 import java.lang.reflect.Field;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+
 import com.lowagie.text.DocumentException;
 
 import com.lowagie.text.pdf.PdfCopyFields;
@@ -79,7 +84,6 @@ public class PDFLiberator {
      * @throws Exception if anything goes wrong and leaves <code>file</code> untouched
      */
     public static void liberate(File file) throws Exception {
-        System.out.println("Liberating " + file + '.');
         File tmp = File.createTempFile(file.getName(), ".tmp", file.getParentFile());
         tmp.deleteOnExit();
         liberate(new FileInputStream(file), new FileOutputStream(tmp));
@@ -98,8 +102,11 @@ public class PDFLiberator {
             } catch (Exception e) {
                 System.err.println("Error processing stdin: " + e);
             }
+        } else if (args.length == 0) {
+            GUI.launch();
         } else {
             for (String arg : args) {
+                System.out.println("Liberating " + arg + '.');
                 try {
                     liberate(new File(arg));
                 } catch (Exception e) {
