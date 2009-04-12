@@ -44,6 +44,7 @@ public class GUI {
                 JMenuBar menuBar = new JMenuBar();
                 frame.setJMenuBar(menuBar);
                 JMenu fileMenu = new JMenu("File");
+                // TODO: Use the OS X wrapper class to do the right thing for the menu bar.
                 menuBar.add(fileMenu);
                 JMenuItem liberateMenuItem = new JMenuItem("Liberate...");
                 liberateMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
@@ -54,6 +55,7 @@ public class GUI {
                         System.err.println("Liberate...");
                         JFileChooser chooser = new JFileChooser();
                         chooser.setMultiSelectionEnabled(true);
+                        // TODO: Use prefs to store current directory.
                         int result = chooser.showOpenDialog(frame);
                         if (result == JFileChooser.APPROVE_OPTION) {
                             File[] selected = chooser.getSelectedFiles();
