@@ -19,12 +19,20 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+/**
+ * A GUI for PDFLiberator.
+ *
+ * @author Gene McCulley <a href="mailto:mcculley@stackframe.com">mcculley@stackframe.com</a>
+ */
 public class GUI {
 
     private GUI() {
         // Inhibit construction as all methods are static.
     }
 
+    /**
+     * Instantiate the GUI.
+     */
     public static void launch() {
         SwingUtilities.invokeLater(new Runnable() {
 
